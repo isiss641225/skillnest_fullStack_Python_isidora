@@ -15,6 +15,7 @@ pymysql = "==1.1.2"
 python-dotenv = "==1.2.1"
 werkzeug = "==3.1.5"
 cryptography = "*"
+shell = "*"
 flask = "*"
 
 [dev-packages]
