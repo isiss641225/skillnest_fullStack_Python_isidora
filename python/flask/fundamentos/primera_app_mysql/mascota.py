@@ -87,9 +87,8 @@ class Mascota:
 
         for mascota in resultados:
 
-            mascotas.append(
-                cls(mascota)
-            )
+            for mascota in resultados:
+                mascotas.append(cls(mascota))
 
 
         # --------------------------------------------------
