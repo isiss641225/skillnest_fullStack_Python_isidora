@@ -96,3 +96,32 @@ class Mascota:
         # --------------------------------------------------
 
         return mascotas
+    
+    
+# ======================================================
+    # OBTENER MASCOTAS POR TIPO
+    # ======================================================
+
+    @classmethod
+    def get_by_type(cls, tipo):
+        """
+        Consulta las mascotas filtradas por el atributo 'tipo'.
+        """
+        query = """
+            SELECT *
+            FROM mascotas
+            WHERE tipo = %(tipo)s;
+        """
+
+        data = {
+            "tipo": tipo
+        }
+
+        resultados = connectToMySQL("primera_flask").query_db(query, data)
+
+        mascotas = []
+        if resultados:
+            for mascota in resultados:
+                mascotas.append(cls(mascota))
+
+        return mascotas

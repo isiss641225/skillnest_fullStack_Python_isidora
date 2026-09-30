@@ -2,11 +2,8 @@
 # SERVIDOR FLASK + MYSQL
 # ==========================================================
 
-
 from flask import Flask, render_template
-
 from mascota import Mascota
-
 
 # ==========================================================
 # CREAR APLICACIÓN
@@ -25,35 +22,37 @@ def index():
     Consulta todas las mascotas de la base de datos
     y las envía hacia la plantilla HTML.
     """
-
-    # ------------------------------------------------------
-    # Consultar base de datos mediante el modelo.
-    # ------------------------------------------------------
-
     mascotas = Mascota.get_all()
-
-
-    # ------------------------------------------------------
-    # Mostrar resultados en la terminal.
-    # ------------------------------------------------------
-
     print(mascotas)
 
-
-    # ------------------------------------------------------
-    # Enviar resultados a Jinja2.
-    # ------------------------------------------------------
-
+    # Corregido: 'todas_mascotas' para que coincida con el HTML
     return render_template(
         "index.html",
-        mascotas=mascotas
+        todas_mascotas=mascotas
     )
 
 
 # ==========================================================
-# EJECUTAR SERVIDOR
+# RUTA: FILTRAR SOLO PERROS
+# ==========================================================
+
+@app.route("/mascotas/perros")
+def perros():
+    """
+    Consulta únicamente las mascotas cuyo tipo sea 'Perro'.
+    """
+    solo_perros = Mascota.get_by_type("Perro")
+
+    # Corregido: se pasa solo_perros a la variable todas_mascotas
+    return render_template(
+        "index.html",
+        todas_mascotas=solo_perros
+    )
+
+
+# ==========================================================
+# EJECUTAR SERVIDOR (Siempre al final del archivo)
 # ==========================================================
 
 if __name__ == "__main__":
-
     app.run(debug=True)

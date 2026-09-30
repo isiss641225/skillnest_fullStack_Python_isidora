@@ -1,59 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Mascotas</title>
-
 </head>
-
 <body>
 
-    <h1>Listado de Mascotas</h1>
+    <h1>Las mascotas 🐾</h1>
 
-
-    {% if mascotas %}
-
-        <ul>
-
-            {% for mascota in mascotas %}
-
-                <li>
-
-                    <strong>
-                        {{ mascota.nombre }}
-                    </strong>
-
-                    -
-
-                    {{ mascota.tipo }}
-
-                    -
-
-                    {{ mascota.color }}
-
-                </li>
-
+    {% if todas_mascotas %}
+        <div class="container">
+            {% for una_mascota in todas_mascotas %}
+                <div class="card">
+                    <p>
+                        <b>ID:</b> {{ una_mascota.id }} <br>
+                        <b>Nombre:</b> {{ una_mascota.nombre }} <br>
+                        <b>Tipo:</b> {{ una_mascota.tipo }} <br>
+                        <b>Color:</b> {{ una_mascota.color }} <br>
+                        <b>Creado:</b> {{ una_mascota.created_at }} <br>
+                        <b>Actualizado:</b> {{ una_mascota.updated_at }}
+                    </p>
+                </div>
             {% endfor %}
-
-        </ul>
-
+        </div>
     {% else %}
-
-        <p>
-            No existen mascotas registradas.
-        </p>
-
+        <p class="no-data">No existen mascotas registradas.</p>
     {% endif %}
 
-
 </body>
-
 </html>
