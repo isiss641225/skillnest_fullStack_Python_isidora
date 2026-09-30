@@ -1,15 +1,6 @@
 # ==========================================================
 # MODELO MASCOTA
 # ==========================================================
-#
-# Este archivo representa la tabla "mascotas"
-# mediante una clase de Python.
-#
-# ==========================================================
-
-
-# Importamos la función encargada de crear
-# una conexión con MySQL.
 
 from mysqlconnection import connectToMySQL
 
@@ -25,20 +16,13 @@ class Mascota:
 
     def __init__(self, data):
         """
-        Recibe un diccionario proveniente de MySQL
-        y transforma sus datos en atributos del objeto.
+        Convierte un diccionario de MySQL en un objeto Mascota.
         """
-
         self.id = data["id"]
-
         self.nombre = data["nombre"]
-
         self.tipo = data["tipo"]
-
         self.color = data["color"]
-
         self.created_at = data["created_at"]
-
         self.updated_at = data["updated_at"]
 
 
@@ -49,57 +33,25 @@ class Mascota:
     @classmethod
     def get_all(cls):
         """
-        Consulta todas las mascotas almacenadas
-        en la base de datos.
-
-        Retorna una lista de objetos Mascota.
+        Devuelve todas las mascotas de la base de datos.
         """
-
-        # --------------------------------------------------
-        # Consulta SQL
-        # --------------------------------------------------
-
         query = """
             SELECT *
             FROM mascotas;
         """
 
-
-        # --------------------------------------------------
-        # Ejecutar consulta
-        # --------------------------------------------------
-
-        resultados = connectToMySQL(
-            "primera_flask"
-        ).query_db(query)
-
-
-        # --------------------------------------------------
-        # Crear lista de objetos
-        # --------------------------------------------------
+        resultados = connectToMySQL("primera_flask").query_db(query)
 
         mascotas = []
-
-
-        # --------------------------------------------------
-        # Convertir cada diccionario en Mascota
-        # --------------------------------------------------
-
-        for mascota in resultados:
-
+        if resultados:
             for mascota in resultados:
                 mascotas.append(cls(mascota))
 
-
-        # --------------------------------------------------
-        # Retornar resultado
-        # --------------------------------------------------
-
         return mascotas
-    
-    
-# ======================================================
-    # OBTENER MASCOTAS POR TIPO
+
+
+    # ======================================================
+    # OBTENER MASCOTAS POR TIPO (Para /mascotas/perros)
     # ======================================================
 
     @classmethod
@@ -125,3 +77,30 @@ class Mascota:
                 mascotas.append(cls(mascota))
 
         return mascotas
+
+
+    # ======================================================
+    # OBTENER MASCOTA POR ID (Para /mascota/<int:id>)
+    # ======================================================
+
+    @classmethod
+    def get_by_id(cls, id):
+        """
+        Busca una mascota utilizando su ID.
+        """
+        query = """
+            SELECT *
+            FROM mascotas
+            WHERE id = %(id_mascota)s;
+        """
+
+        data = {
+            "id_mascota": id
+        }
+
+        resultados = connectToMySQL("primera_flask").query_db(query, data)
+
+        if resultados:
+            return cls(resultados[0])
+
+        return None
