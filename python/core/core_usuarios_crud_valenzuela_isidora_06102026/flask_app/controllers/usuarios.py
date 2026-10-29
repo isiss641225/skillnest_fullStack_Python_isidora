@@ -1,6 +1,10 @@
-from flask import render_template, request, redirect, url_for
 from flask_app import app
+from flask import render_template, request, redirect, url_for
 from flask_app.models.usuario import Usuario
+
+@app.route("/")
+def index():
+    return redirect(url_for("usuarios"))
 
 @app.route("/usuarios")
 def usuarios():
@@ -18,24 +22,17 @@ def crear():
         "apellido": request.form["apellido"].strip(),
         "email": request.form["email"].strip()
     }
-    if not data["nombre"] or not data["apellido"] or not data["email"]:
-        return render_template("nuevo.html", error="Todos los campos son obligatorios.", datos=data)
-    
     Usuario.save(data)
     return redirect(url_for("usuarios"))
 
 @app.route("/usuarios/<int:id>")
 def detalle(id):
     usuario = Usuario.get_by_id(id)
-    if not usuario:
-        return "Usuario no encontrado", 404
     return render_template("detalle.html", usuario=usuario)
 
 @app.route("/usuarios/editar/<int:id>")
 def editar(id):
     usuario = Usuario.get_by_id(id)
-    if not usuario:
-        return "Usuario no encontrado", 404
     return render_template("editar.html", usuario=usuario)
 
 @app.route("/usuarios/<int:id>/actualizar", methods=["POST"])
@@ -46,10 +43,6 @@ def actualizar(id):
         "apellido": request.form["apellido"].strip(),
         "email": request.form["email"].strip()
     }
-    if not data["nombre"] or not data["apellido"] or not data["email"]:
-        usuario = Usuario.get_by_id(id)
-        return render_template("editar.html", usuario=usuario, error="Todos los campos son obligatorios.")
-    
     Usuario.update(data)
     return redirect(url_for("usuarios"))
 
