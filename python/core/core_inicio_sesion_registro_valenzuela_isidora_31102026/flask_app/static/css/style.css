@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    padding: 40px 20px;
+}
+
+.contenedor-principal {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.tarjeta-formulario {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-formulario h2 {
+    margin-bottom: 20px;
+    color: #333333;
+    text-align: center;
+}
+
+.grupo-campo {
+    margin-bottom: 15px;
+}
+
+.grupo-campo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555555;
+}
+
+.grupo-campo input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.grupo-campo input:focus {
+    outline: none;
+    border-color: #0066cc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0052a3;
+}
+
+.lista-errores {
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    color: #cc0000;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    list-style-type: disc;
+    padding-left: 30px;
+    font-size: 14px;
+}
+
+.lista-errores li {
+    margin-bottom: 5px;
+}
+
+.lista-errores li:last-child {
+    margin-bottom: 0;
+}
+
+.contenedor-exito {
+    max-width: 600px;
+    margin: 50px auto;
+}
+
+.contenedor-exito h1 {
+    font-size: 48px;
+    color: #111111;
+    margin-bottom: 25px;
+}
+
+.enlace-salir {
+    color: #0066cc;
+    font-size: 18px;
+    text-decoration: underline;
+}
+
+.enlace-salir:hover {
+    color: #004080;
+}
