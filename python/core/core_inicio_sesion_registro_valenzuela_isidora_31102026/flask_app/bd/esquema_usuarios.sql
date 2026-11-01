@@ -2,13 +2,16 @@ CREATE DATABASE IF NOT EXISTS esquema_usuarios;
 USE esquema_usuarios;
 
 CREATE TABLE IF NOT EXISTS usuarios (
-    id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(255) NOT NULL,
-    apellido VARCHAR(255) NOT NULL,
-    correo VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    fecha_nacimiento DATE NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    apellido VARCHAR(45) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+INSERT INTO usuarios (nombre, apellido, email) VALUES
+("Francisca", "Valenzuela", "fran@gmail.com"),
+("Javiera", "Mena", "javi@gmail.com"),
+("Beatriz", "Retamal", "bea@gmail.com"),
+("Lucía", "Perez", "luci@gmail.com");

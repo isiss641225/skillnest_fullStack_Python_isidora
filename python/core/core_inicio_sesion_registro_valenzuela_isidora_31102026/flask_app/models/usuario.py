@@ -1,38 +1,33 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from datetime import datetime, date
-import re
-
-CORREO_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-NOMBRE_REGEX = re.compile(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$')
-PASSWORD_REGEX = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$')
 
 class Usuario:
     BASE_DATOS = "esquema_usuarios"
 
     def __init__(self, datos):
-        self.id = datos['id']
-        self.nombre = datos['nombre']
-        self.apellido = datos['apellido']
-        self.correo = datos['correo']
-        self.password = datos['password']
+        self.id = datos.get('id')
+        self.nombre = datos.get('nombre')
+        self.apellido = datos.get('apellido')
+        self.email = datos.get('email')              # Usamos 'email' como en tu SQL
+        self.password = datos.get('password')
         self.fecha_nacimiento = datos.get('fecha_nacimiento')
-        self.created_at = datos['created_at']
-        self.updated_at = datos['updated_at']
+        self.created_at = datos.get('created_at')
+        self.updated_at = datos.get('updated_at')
 
     @classmethod
     def guardar(cls, datos):
         query = """
-        INSERT INTO usuarios (nombre, apellido, correo, password, fecha_nacimiento)
-        VALUES (%(nombre)s, %(apellido)s, %(correo)s, %(password)s, %(fecha_nacimiento)s);
+        INSERT INTO usuarios (nombre, apellido, email, password, fecha_nacimiento)
+        VALUES (%(nombre)s, %(apellido)s, %(email)s, %(password)s, %(fecha_nacimiento)s);
         """
         return connectToMySQL(cls.BASE_DATOS).query_db(query, datos)
 
     @classmethod
-    def obtener_por_correo(cls, datos):
-        query = "SELECT * FROM usuarios WHERE correo = %(correo)s;"
+    def obtener_por_email(cls, datos):
+        query = "SELECT * FROM usuarios WHERE email = %(email)s;"
         resultados = connectToMySQL(cls.BASE_DATOS).query_db(query, datos)
-        if len(resultados) < 1:
+        if not resultados or len(resultados) < 1:
             return False
         return cls(resultados[0])
 
@@ -40,7 +35,7 @@ class Usuario:
     def obtener_por_id(cls, datos):
         query = "SELECT * FROM usuarios WHERE id = %(id)s;"
         resultados = connectToMySQL(cls.BASE_DATOS).query_db(query, datos)
-        if len(resultados) < 1:
+        if not resultados or len(resultados) < 1:
             return False
         return cls(resultados[0])
 
@@ -48,40 +43,37 @@ class Usuario:
     def validar_registro(datos_usuario):
         es_valido = True
 
+        # Nombre: solo validar longitud
         if len(datos_usuario['nombre'].strip()) < 2:
             flash("El nombre debe tener al menos 2 caracteres.", "registro")
             es_valido = False
-        elif not NOMBRE_REGEX.match(datos_usuario['nombre']):
-            flash("El nombre solo debe contener letras.", "registro")
-            es_valido = False
 
+        # Apellido: solo validar longitud
         if len(datos_usuario['apellido'].strip()) < 2:
             flash("El apellido debe tener al menos 2 caracteres.", "registro")
             es_valido = False
-        elif not NOMBRE_REGEX.match(datos_usuario['apellido']):
-            flash("El apellido solo debe contener letras.", "registro")
-            es_valido = False
 
-        if not CORREO_REGEX.match(datos_usuario['correo']):
-            flash("El correo electrónico no es válido.", "registro")
+        # Email: verificar que no esté vacío y no exista previamente
+        if len(datos_usuario['email'].strip()) < 1:
+            flash("El correo electrónico no puede estar vacío.", "registro")
             es_valido = False
         else:
-            usuario_existente = Usuario.obtener_por_correo({'correo': datos_usuario['correo']})
+            usuario_existente = Usuario.obtener_por_email({'email': datos_usuario['email']})
             if usuario_existente:
                 flash("Este correo electrónico ya está registrado.", "registro")
                 es_valido = False
 
+        # Contraseña: al menos 8 caracteres
         if len(datos_usuario['password']) < 8:
             flash("La contraseña debe tener al menos 8 caracteres.", "registro")
             es_valido = False
-        elif not PASSWORD_REGEX.match(datos_usuario['password']):
-            flash("La contraseña debe incluir al menos una letra mayúscula y un número.", "registro")
-            es_valido = False
 
+        # Confirmación de contraseña
         if datos_usuario['password'] != datos_usuario['confirmar_password']:
             flash("Las contraseñas no coinciden.", "registro")
             es_valido = False
 
+        # Fecha de Nacimiento (Mayoría de edad)
         if not datos_usuario.get('fecha_nacimiento'):
             flash("Debes ingresar tu fecha de nacimiento.", "registro")
             es_valido = False

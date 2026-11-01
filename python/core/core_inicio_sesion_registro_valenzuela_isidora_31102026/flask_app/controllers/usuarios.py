@@ -21,7 +21,7 @@ def registro():
     datos = {
         "nombre": request.form['nombre'],
         "apellido": request.form['apellido'],
-        "correo": request.form['correo'],
+        "email": request.form['email'],              # Cambiado a 'email'
         "password": password_encriptada,
         "fecha_nacimiento": request.form['fecha_nacimiento']
     }
@@ -32,7 +32,7 @@ def registro():
 
 @app.route('/login', methods=['POST'])
 def login():
-    usuario = Usuario.obtener_por_correo({'correo': request.form['correo']})
+    usuario = Usuario.obtener_por_email({'email': request.form['email']})
     if not usuario:
         flash("Correo o contraseña incorrectos.", "login")
         return redirect('/')
