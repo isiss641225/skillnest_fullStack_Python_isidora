@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio / Registro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
 
     <div class="contenedor-principal">
-
+        
         <!-- SECCIÓN DE REGISTRO -->
         <div class="tarjeta-formulario">
             <h2>Registro</h2>
 
             {% with mensajes = get_flashed_messages(category_filter=["registro"]) %}
-            {% if mensajes %}
-            <ul class="lista-errores">
-                {% for mensaje in mensajes %}
-                <li>{{ mensaje }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+                {% if mensajes %}
+                    <ul class="lista-errores">
+                        {% for mensaje in mensajes %}
+                            <li>{{ mensaje }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endwith %}
 
             <form action="/registro" method="POST" autocomplete="off">
@@ -37,10 +35,10 @@
                     <input type="text" id="apellido" name="apellido" required>
                 </div>
 
-                <!-- Cambia name="correo" por name="email" -->
+                <!-- CAMBIADO: name="email" -->
                 <div class="grupo-campo">
-                    <label for="login_correo">E-mail:</label>
-                    <input type="email" id="login_correo" name="email" required>
+                    <label for="correo">E-mail:</label>
+                    <input type="email" id="correo" name="email" required>
                 </div>
 
                 <div class="grupo-campo">
@@ -67,19 +65,20 @@
             <h2>Inicio de Sesión</h2>
 
             {% with mensajes = get_flashed_messages(category_filter=["login"]) %}
-            {% if mensajes %}
-            <ul class="lista-errores">
-                {% for mensaje in mensajes %}
-                <li>{{ mensaje }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+                {% if mensajes %}
+                    <ul class="lista-errores">
+                        {% for mensaje in mensajes %}
+                            <li>{{ mensaje }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endwith %}
 
             <form action="/login" method="POST" autocomplete="off">
+                <!-- CAMBIADO: name="email" -->
                 <div class="grupo-campo">
                     <label for="login_correo">E-mail:</label>
-                    <input type="email" id="login_correo" name="correo" required>
+                    <input type="email" id="login_correo" name="email" required>
                 </div>
 
                 <div class="grupo-campo">
@@ -94,5 +93,4 @@
     </div>
 
 </body>
-
 </html>
