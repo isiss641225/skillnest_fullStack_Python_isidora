@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Complementos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Complementos</h1>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Crear Taco</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Formulario para crear complemento -->
+        <div class="col-md-5">
+            <div class="card p-4 shadow-sm">
+                <h3>Nuevo Complemento</h3>
+                <form action="{{ url_for('crear_complemento') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre_complemento" class="form-label">Nombre del complemento</label>
+                        <input type="text" name="nombre_complemento" id="nombre_complemento" class="form-control" placeholder="Ej. Cilantro, Queso, Piña" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Guardar Complemento</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de complementos existentes -->
+        <div class="col-md-7">
+            <div class="card p-4 shadow-sm">
+                <h3>Lista de Complementos</h3>
+                {% if todos_complementos %}
+                    <ul class="list-group">
+                        {% for comp in todos_complementos %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ comp.nombre_complemento }}</span>
+                                <a href="/complementos/{{ comp.id }}" class="btn btn-sm btn-outline-primary">
+                                    Ver Tacos que lo usan
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No hay complementos registrados.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
